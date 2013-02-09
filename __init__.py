@@ -19,4 +19,4 @@ def runModule(name, modules={}):
         if prefix != "":
             prefix = prefix + "."
         for m_def, m_impl in moduleDefs.items():
-    
+            namespace[prefix + m_def] = m_impl

@@ -35,7 +35,6 @@ class Fold(ObservableValue):
     def add_operand(self, operand):
         def closure(op, i):
             def setCache(v):
-                print i,v
                 self._cache[i] = v
                 self._recalc()
             op.subscribe(setCache)
@@ -86,6 +85,5 @@ class TimedValue(ObservableValue):
         if self._dispatchProc == None:
             raise NoDispatcherError()
         def closure(v, delay):
-            print "%s -> %s, %d" %(repr(self), str(v), delay)   
             self._dispatchProc(lambda : self.notify(v), delay)
         closure(v, self._delays.get(v, 0))

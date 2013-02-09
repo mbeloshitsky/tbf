@@ -21,7 +21,7 @@ class RealtimeVM():
 
 class SimulationVM():
 
-   def __init__(self, values):
+    def __init__(self, values):
        self._t = 0
        def int_t(dt):
            self._t += dt
@@ -35,6 +35,6 @@ class SimulationVM():
            val.setDispatchProc(dispatchProc)
        for val in values.values():
            val(False)
-
+           
     def run(self):
        self._dispatcher.run()

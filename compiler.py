@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import unicodedata
-import yaml
 
 from pyparsing import *
 
@@ -13,10 +12,10 @@ def isUnicodeNum(ch):
     return unicodedata.category(ch)[0] == 'N'
 
 alphanum = u''.join(filter(isUnicodeAlphanum,
-    map(unichr,xrange(65536))))
+    map(chr,range(65536))))
 
 num = u''.join(filter(isUnicodeNum,
-    map(unichr,xrange(65536))))
+    map(chr,range(65536))))
 
 # Маркеры
 name   = Word(alphanum)
