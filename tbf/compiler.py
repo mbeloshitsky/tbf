@@ -41,24 +41,27 @@ tbf      = Group(tbf_head + EQ + expr ^ Suppress(lineEnd | comment))
 tbf_file = ZeroOrMore(tbf) + StringEnd()
 
 class DuplicationNameError(Exception):
-    pass
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
 
 def compileModuleDefs(sourceText, exports):
     namespace = exports
 
     def compileExpr(body):
-        if type(body) == str:
+        if type(body) == unicode:
             return namespace[body]
         elif len(body) == 1:
             return compileExpr(body[0])
-        elif len(body) == 2 and body[0] == '!':
+        elif len(body) == 2 and body[0] == u'!':
             return Not(compileExpr(body[1]))
-        elif len(body) == 3 and body[1] == '|':
+        elif len(body) == 3 and body[1] == u'|':
             or_op = Or()
             or_op.add_operand(compileExpr(body[0]))
             or_op.add_operand(compileExpr(body[2]))
             return or_op
-        elif len(body) == 3 and body[1] == '&':
+        elif len(body) == 3 and body[1] == u'&':
             and_op = And()
             and_op.add_operand(compileExpr(body[0]))
             and_op.add_operand(compileExpr(body[2]))
@@ -81,5 +84,6 @@ def compileModuleDefs(sourceText, exports):
                                 int(head[1]),
                                 int(head[2]))
     for ast in ast_list:
-        compileExpr(ast[-1]).subscribe(namespace[tbf_name])
+        tbf_name, tbf_body = ast[0], ast[-1]
+        compileExpr(tbf_body).subscribe(namespace[tbf_name])
     return namespace

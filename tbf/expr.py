@@ -57,7 +57,7 @@ class Not(ObservableValue):
         self._inp.subscribe(self)
 
     def __repr__(self):
-        return "Not(%s)" % repr(self._inp)
+        return u"Not(%s)" % repr(self._inp)
 
     def __call__(self, v):
         self.notify(not v)
@@ -67,7 +67,11 @@ class TimedValue(ObservableValue):
     def __init__(self, timeRise, timeFall):
 
         ObservableValue.__init__(self)
-
+        
+        if timeRise <= 0:
+            timeRise = 2
+        if timeFall <= 0:
+            timeFall = 2
         self._delays = {
             True  : timeRise/1000.0,
             False : timeFall/1000.0
@@ -76,7 +80,7 @@ class TimedValue(ObservableValue):
         self._dispatchProc  = None
     
     def __repr__(self):
-        return "TimedValue(%d,%d) " % (self._delays[True], self._delays[False])
+        return u"TimedValue(%d,%d) " % (self._delays[True], self._delays[False])
 
     def setDispatchProc(self, dispatchProc):
         self._dispatchProc = dispatchProc
